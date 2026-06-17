@@ -3,6 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.11.1",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "esbuild",
+      "prisma",
+      "sharp",
+      "workerd"
+    ]
+  },
   "type": "module",
   "scripts": {
     "build": "prisma generate && prisma db push && next build",
