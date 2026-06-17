@@ -7,8 +7,9 @@ import { headers } from "next/headers";
 
 export async function updateSettingsWithDefaults() {
   // 尝试从多个来源获取 baseUrl
-  const referer = headers().get('referer');
-  const host = headers().get('host');
+  const headersList = await headers();
+  const referer = headersList.get('referer');
+  const host = headersList.get('host');
   
   let baseUrl = '';
 

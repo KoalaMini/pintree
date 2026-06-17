@@ -3,11 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string; folderId: string } }
+  { params }: { params: Promise<{ id: string; folderId: string }> }
 ) {
   try {
-    // 等待参数解析
-    const { id, folderId } = await Promise.resolve(params);
+    const { id, folderId } = await params;
     
     // 验证参数
     if (!id || !folderId) {

@@ -5,9 +5,10 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -15,7 +16,7 @@ export async function DELETE(
 
     // 检查文件夹是否存在
     const folder = await prisma.folder.findUnique({
-      where: { id: params.id },
+      where: { id: id },
     });
 
     if (!folder) {
@@ -24,7 +25,7 @@ export async function DELETE(
 
     // 删除文件夹
     await prisma.folder.delete({
-      where: { id: params.id },
+      where: { id: id },
     });
 
     return NextResponse.json({ message: "Delete success" });
@@ -36,9 +37,10 @@ export async function DELETE(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -48,7 +50,7 @@ export async function PATCH(
 
     // 检查文件夹是否存在
     const folder = await prisma.folder.findUnique({
-      where: { id: params.id },
+      where: { id: id },
     });
 
     if (!folder) {
@@ -57,7 +59,7 @@ export async function PATCH(
 
     // 更新文件夹
     const updatedFolder = await prisma.folder.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         name: data.name,
         icon: data.icon,

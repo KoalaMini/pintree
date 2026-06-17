@@ -9,11 +9,11 @@ interface FolderWithItems extends Folder {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { searchParams } = new URL(request.url);
-    const id = params.id;
     const folderId = searchParams.get("folderId");
     const sortField = searchParams.get("sortField") || "createdAt";
     const sortOrder = searchParams.get("sortOrder") || "desc";

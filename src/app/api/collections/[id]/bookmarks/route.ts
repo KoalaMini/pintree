@@ -9,9 +9,9 @@ interface FolderWithItems extends Folder {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await Promise.resolve(params);
+  const { id } = await params;
   try {
     const { searchParams } = new URL(request.url);
     const folderId = searchParams.get("folderId");

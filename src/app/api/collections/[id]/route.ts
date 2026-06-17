@@ -6,9 +6,10 @@ import { Prisma } from "@prisma/client";
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -36,7 +37,7 @@ export async function PATCH(
             }
           ],
           NOT: {
-            id: params.id
+            id: id
           }
         }
       });
@@ -52,7 +53,7 @@ export async function PATCH(
     // Update collection with new slug
     const collection = await prisma.collection.update({
       where: {
-        id: params.id,
+        id: id,
       },
       data: {
         name,
@@ -81,9 +82,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -91,7 +93,7 @@ export async function DELETE(
 
     await prisma.collection.delete({
       where: {
-        id: params.id
+        id: id
       },
     });
 

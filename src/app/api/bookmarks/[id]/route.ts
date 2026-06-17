@@ -5,9 +5,10 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -15,7 +16,7 @@ export async function DELETE(
 
     await prisma.bookmark.delete({
       where: {
-        id: params.id
+        id: id
       },
     });
 
@@ -28,9 +29,10 @@ export async function DELETE(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -39,7 +41,7 @@ export async function PUT(
     const data = await request.json();
     const bookmark = await prisma.bookmark.update({
       where: {
-        id: params.id,
+        id: id,
       },
       data: {
         title: data.title,

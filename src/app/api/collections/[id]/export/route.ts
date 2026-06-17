@@ -107,9 +107,10 @@ function buildFolderHierarchy(folders: Folder[]): {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     console.log('session', session);
     if (!session?.user?.email) {
@@ -118,7 +119,7 @@ export async function GET(
 
     const collection = await prisma.collection.findFirst({
       where: {
-        id: params.id,
+        id: id,
       },
       include: {
         folders: {
