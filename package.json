@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "db:push": "dotenv -e .env.local -- prisma db push",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "cf:build": "npx @opennextjs/cloudflare build"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
